@@ -227,8 +227,10 @@ class TestOptim:
         for _i in range(20):
             optimizer.step(fn)
             optimizer_cuda.step(fn_cuda)
-            assert weight == weight_cuda
-            assert bias == bias_cuda
+            #assert weight == weight_cuda.cpu()
+            assert torch.all(weight.eq(weight_cuda.cpu())) == True
+            #assert bias == bias_cuda.cpu()
+            assert torch.all(bias.eq(bias_cuda.cpu())) == True
 
         # validate deepcopy() copies all public attributes
         def getPublicAttr(obj):

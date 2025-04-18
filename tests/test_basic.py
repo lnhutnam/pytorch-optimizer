@@ -86,7 +86,9 @@ def test_benchmark_function(case, optimizer_config):
     for _ in range(iterations):
         optimizer.zero_grad()
         f = func(x)
-        f.backward(retain_graph=True, create_graph=True)
+        #f.backward(retain_graph=True, create_graph=True)
+        grad = torch.autograd.grad(f, x, create_graph=True)[0]
+        x.grad = grad
         optimizer.step()
     assert torch.allclose(x, x_min, atol=0.001)
 
